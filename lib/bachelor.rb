@@ -1,19 +1,19 @@
 def get_first_name_of_season_winner(data, season)
-  data[season].each do |contestant_hash|
+  data[season].map do |contestant_hash|
     if contestant_hash["status"] == "Winner"
       contestant_hash["name"].split.first
     end
-  end
+  end.compact.join
 end
 
 def get_contestant_name(data, occupation)
-  data.each do |season, contestants_array|
-    contestants_array.each do |contestant_hash|
+  data.map do |season, contestants_array|
+    contestants_array.map do |contestant_hash|
       if contestant_hash["occupation"] == occupation
         contestant_hash["name"]
       end
     end
-  end
+  end.flatten.compact.join
 end
 
 def count_contestants_by_hometown(data, hometown)
@@ -28,27 +28,16 @@ def count_contestants_by_hometown(data, hometown)
   counter
 end
 
-# def get_occupation(data, hometown)
-#   occupations_from_town = []
-#   data.each do |season, contestants_array|
-#     contestants_array.each do |contestant_hash|
-#       if contestant_hash["hometown"] == hometown
-#         occupations_from_town << contestant_hash["occupation"]
-#       end
-#     end
-#   end
-#   occupations_from_town[0]
-# end
-
-
 def get_occupation(data, hometown)
-  data.each do |season, contestants|
-    contestants.each do |contestant_hash|
+  occupations_from_town = []
+  data.each do |season, contestants_array|
+    contestants_array.each do |contestant_hash|
       if contestant_hash["hometown"] == hometown
-        return contestant_hash['occupation']
+        occupations_from_town << contestant_hash["occupation"]
       end
     end
   end
+  occupations_from_town[0]
 end
 
 def get_average_age_for_season(data, season)
